@@ -7,6 +7,7 @@ function softcredittokens_civicrm_tokens(&$tokens) {
   $tokens['softcreditor']['softcreditor.display_name'] = 'Soft Creditor Display Name';
   $tokens['softcreditor']['softcreditor.first_name'] = 'Soft Creditor First Name';
   $tokens['softcreditor']['softcreditor.last_name'] = 'Soft Creditor Last Name';
+  $tokens['softcreditor']['softcreditor.financial_type'] = 'Soft Creditor Financial Type';
 }
 
 function softcredittokens_civicrm_tokenValues(&$values, $cids, $job = NULL, $tokens = [], $context = NULL) {
@@ -19,13 +20,20 @@ function softcredittokens_civicrm_tokenValues(&$values, $cids, $job = NULL, $tok
     foreach ($cids as $cid) {
       $contacts = civicrm_api3('ContributionSoft', 'get', [
         'sequential' => 1,
-        'return' => ["contribution_id.contact_id.display_name", "contribution_id.contact_id.first_name", "contribution_id.contact_id.last_name", "contact_id"],
+        'return' => [
+          "contribution_id.contact_id.display_name",
+          "contribution_id.contact_id.first_name",
+          "contribution_id.contact_id.last_name",
+          "contact_id",
+          'contribution_id.financial_type_id.name',
+        ],
         'contact_id' => $cid,
         'options' => ['sort' => "id DESC", 'limit' => 1],
       ]);
       $values[$cid]['softcreditor.display_name'] = $contacts['values'][0]['contribution_id.contact_id.display_name'];
       $values[$cid]['softcreditor.first_name'] = $contacts['values'][0]['contribution_id.contact_id.first_name'];
       $values[$cid]['softcreditor.last_name'] = $contacts['values'][0]['contribution_id.contact_id.last_name'];
+      $values[$cid]['softcreditor.financial_type'] = $contacts['values'][0]['contribution_id.financial_type_id.name'];
     }
   }
 }
