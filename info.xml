@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="softcredittokens" type="module">
-  <file>Soft Credit Tokens</file>
-  <name></name>
+  <file>softcredittokens</file>
+  <name>Soft Credit Tokens</name>
   <description>Tokens for use in conjunction with CiviRules based on a Soft Credit trigger. Primary tokens about the soft creditor (donor).</description>
   <license>AGPL-3.0</license>
   <maintainer>
