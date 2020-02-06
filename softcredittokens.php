@@ -3,6 +3,33 @@
 require_once 'softcredittokens.civix.php';
 use CRM_Softcredittokens_ExtensionUtil as E;
 
+function softcredittokens_civicrm_tokens(&$tokens) {
+  $tokens['softcreditor']['softcreditor.display_name'] = 'Soft Creditor Display Name';
+  $tokens['softcreditor']['softcreditor.first_name'] = 'Soft Creditor First Name';
+  $tokens['softcreditor']['softcreditor.last_name'] = 'Soft Creditor Last Name';
+}
+
+function softcredittokens_civicrm_tokenValues(&$values, $cids, $job = NULL, $tokens = [], $context = NULL) {
+  // Ugh, hook called different ways.  Always convert to array.
+  if (!is_array($cids)) {
+    $cids = [$cids];
+  }
+  // Soft Creditor Tokens.
+  if ($tokens['softcreditor'] ?? FALSE) {
+    foreach ($cids as $cid) {
+      $contacts = civicrm_api3('ContributionSoft', 'get', [
+        'sequential' => 1,
+        'return' => ["contribution_id.contact_id.display_name", "contribution_id.contact_id.first_name", "contribution_id.contact_id.last_name", "contact_id"],
+        'contact_id' => $cid,
+        'options' => ['sort' => "id DESC", 'limit' => 1],
+      ]);
+      $values[$cid]['softcreditor.display_name'] = $contacts['values'][0]['contribution_id.contact_id.display_name'];
+      $values[$cid]['softcreditor.first_name'] = $contacts['values'][0]['contribution_id.contact_id.first_name'];
+      $values[$cid]['softcreditor.last_name'] = $contacts['values'][0]['contribution_id.contact_id.last_name'];
+    }
+  }
+}
+
 /**
  * Implements hook_civicrm_config().
  *

@@ -1,15 +1,13 @@
-# softcredittokens
+# Soft Credit Tokens
 
-![Screenshot](/images/screenshot.png)
-
-(*FIXME: In one or two paragraphs, describe what the extension does and why one would download it. *)
+When sending emails based on soft credits (via CiviRules' "Soft Credit is added/edited/deleted" triggers), pull in information about the soft creditor (i.e. donor).
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 ## Requirements
 
 * PHP v7.0+
-* CiviCRM (*FIXME: Version number*)
+* CiviCRM 5.23+
 
 ## Installation (Web UI)
 
@@ -37,8 +35,9 @@ cv en softcredittokens
 
 ## Usage
 
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
+After installation, tokens will be available to pull in a donor's information.
 
 ## Known Issues
 
-(* FIXME *)
+* The information is not specific to the soft credit in question, owing to limitations in the legacy token processor.  It will always pull the most recent soft credit for this individual.  When TokenProcessor covers this scenario the extension will be updated.
+* Only first name/last name/display name are currently covered.  This could be relatively easily updated to cover all contact fields with a loop.
